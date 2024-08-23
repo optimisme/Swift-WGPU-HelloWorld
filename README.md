@@ -25,12 +25,12 @@ brew install sdl2
 
 ## How to run the example
 
-Simple triangle:
+Simple triangle (WgpuTriangle):
 ```bash
 ./buildTriangle.sh
 ```
 
-Two triangles filled with one texture from a Cairo drawing:
+Two triangles filled with one texture from a Cairo drawing (WgpuCairo):
 ```bash
 ./buildCairo.sh
 ```
@@ -40,3 +40,7 @@ Two triangles filled with one texture from a Cairo drawing:
 WGPU binaries are found in the **Frameworks** folder and have been downloaded from:
 
 [WGPU v0.19.4.1](https://github.com/gfx-rs/wgpu-native/releases)
+
+## Screen capture of WgpuCairo
+
+<img title="Screen capture of WgpuCairo" alt="Screen capture of WgpuCairo" src="./Images/captureWgpuCairo.png" style="max-width: 500px">
