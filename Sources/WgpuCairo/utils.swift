@@ -16,7 +16,14 @@ func getStringFromUtf8(from cString: UnsafePointer<CChar>) -> String? {
 
 func readFile(named filePath: String) -> String? {
 
-    guard let resourceBundle = Bundle(path: Bundle.main.bundlePath + "/WgpuHelloWorld_WgpuCairo.bundle") else {
+    guard let resourcePath = Bundle.main.resourcePath else {
+        print("Could not access bundle.")
+        return nil
+    }
+
+    let resourcesPath = resourcePath + "/" + bundleID + ".resources"
+
+    guard let resourceBundle = Bundle(path: resourcesPath) else {
         print("Could not find resources bundle.")
         return nil
     }

@@ -126,6 +126,10 @@ let package = Package(
     name: "WgpuHelloWorld",
     products: [
         .executable(
+            name: "WgpuCairo",
+            targets: ["WgpuCairo"]
+        ),
+        .executable(
             name: "WgpuTriangle",
             targets: ["WgpuTriangle"]
         )

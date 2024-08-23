@@ -5,6 +5,8 @@ import Cairo
 
 func createRenderPipeline(device: WGPUDevice, texture: WGPUTexture) -> (WGPURenderPipeline, WGPUBindGroup) {
 
+    listBundle(directory: ".")
+
     let vertexShaderSource: String?
     vertexShaderSource = readFile(named: "Shaders/vertex_shader.wgsl")
 
