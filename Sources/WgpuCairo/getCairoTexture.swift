@@ -3,7 +3,7 @@ import SDL2
 import wgpu
 import Cairo
 
-func createCairoTexture(device: WGPUDevice, queue: WGPUQueue, width: Int, height: Int) -> WGPUTexture {
+func getCairoTexture(device: WGPUDevice, queue: WGPUQueue, width: Int, height: Int) -> WGPUTexture {
     // Create Cairo surface
     let surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, Int32(width), Int32(height))
     let cr = cairo_create(surface)

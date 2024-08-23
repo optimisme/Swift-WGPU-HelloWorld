@@ -8,7 +8,7 @@ func main() {
 
     let window = initWindow()
     let (surface, device, queue, config) = initWGPU(window: window)
-    let cairoTexture = createCairoTexture(device: device, queue: queue, width: 512, height: 512)
+    let cairoTexture = getCairoTexture(device: device, queue: queue, width: 512, height: 512)
     let (renderPipeline, bindGroup) = createRenderPipeline(device: device, texture: cairoTexture)
 
     mainLoop(window: window, surface: surface, device: device, queue: queue, config: config, renderPipeline: renderPipeline, bindGroup: bindGroup)
