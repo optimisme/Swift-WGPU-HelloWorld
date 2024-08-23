@@ -10,6 +10,11 @@ The WGPU backend works on macOS with Metal and on Linux with Vulkan. For this re
 
 ### Linux
 ```bash
+sudo apt-get install libx11-dev 
+sudo apt-get install libcairo2-dev 
+sudo apt-get install libsdl2-dev 
+sudo apt-get install libvulkan-dev 
+sudo apt-get install libvulkan1
 ```
 
 ### macOS
