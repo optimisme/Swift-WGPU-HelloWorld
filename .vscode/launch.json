@@ -23,6 +23,30 @@
             "name": "Release WgpuTriangle",
             "program": "${workspaceFolder:Swift-WGPU-HelloWorld}/.build/release/WgpuTriangle",
             "preLaunchTask": "swift: Build Release WgpuTriangle"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:Swift-WGPU-HelloWorld}",
+            "name": "Debug WgpuCairo",
+            "program": "${workspaceFolder:Swift-WGPU-HelloWorld}/.build/debug/WgpuCairo",
+            "preLaunchTask": "swift: Build Debug WgpuCairo"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:Swift-WGPU-HelloWorld}",
+            "name": "Release WgpuCairo",
+            "program": "${workspaceFolder:Swift-WGPU-HelloWorld}/.build/release/WgpuCairo",
+            "preLaunchTask": "swift: Build Release WgpuCairo"
         }
     ]
 }

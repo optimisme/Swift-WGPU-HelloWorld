@@ -18,9 +18,16 @@ brew install cairo
 brew install sdl2
 ```
 
-## How to run the project
+## How to run the example
+
+Simple triangle:
 ```bash
-./build.sh
+./buildTriangle.sh
+```
+
+Two triangles filled with one texture from a Cairo drawing:
+```bash
+./buildCairo.sh
 ```
 
 ## About WGPU binaries 

@@ -63,6 +63,16 @@ let targets: [Target] = [
         swiftSettings: swiftSettings,
         linkerSettings: linkedLibraries + linkerSettings
     ),
+    .executableTarget(
+        name: "WgpuCairo",
+        dependencies: dependencies,
+        path: "Sources/WgpuCairo",
+        resources: [
+            .copy("Shaders/"),
+        ],
+        swiftSettings: swiftSettings,
+        linkerSettings: linkedLibraries + linkerSettings
+    ),
     .systemLibrary(
         name: "Cairo",
         path: cairoPath,
