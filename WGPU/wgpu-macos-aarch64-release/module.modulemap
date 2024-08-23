@@ -1,0 +1,6 @@
+module wgpu {
+    header "include/wgpu.h"
+    header "include/webgpu.h"
+    link "wgpu_native"
+    export *
+}

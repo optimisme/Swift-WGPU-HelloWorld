@@ -9,20 +9,19 @@ let vulkanPath: String?
 #if os(macOS)
 cairoPath = "Sources/Libs/Cairo/macOS"
 sdl2Path = "Sources/Libs/SDL2/macOS"
-wgpuPath = "./Frameworks/wgpu-macos-aarch64-release"
+wgpuPath = "WGPU/wgpu-macos-aarch64-release"
 vulkanPath = nil // Not used on macOS
 #elseif os(Linux)
 cairoPath = "Sources/Libs/Cairo/Linux"
 sdl2Path = "Sources/Libs/SDL2/Linux"
-wgpuPath = "./Frameworks/wgpu-linux-x86_64-release"
+wgpuPath = "WGPU/wgpu-linux-x86_64-release"
 vulkanPath = "Sources/Libs/Vulkan/Linux"
 #endif
 
 var dependencies: [Target.Dependency] = ["Cairo", "SDL2", "Wgpu"]
 var linkedLibraries: [LinkerSetting] = [
     .linkedLibrary("cairo"),
-    .linkedLibrary("SDL2"),
-    .linkedLibrary("wgpu_native")
+    .linkedLibrary("SDL2")
 ]
 
 var swiftSettings: [SwiftSetting] = []
@@ -68,7 +67,7 @@ let targets: [Target] = [
         dependencies: dependencies,
         path: "Sources/WgpuCairo",
         resources: [
-            .copy("Assets/"),
+            .copy("Assets/")
         ],
         swiftSettings: swiftSettings,
         linkerSettings: linkedLibraries + linkerSettings
@@ -91,11 +90,12 @@ let targets: [Target] = [
             .apt(["libsdl2-dev"])
         ]
     ),
-    .systemLibrary(
+    .target(
         name: "Wgpu",
         path: wgpuPath,
-        pkgConfig: "wgpu_native",
-        providers: []
+        cSettings: [
+            .headerSearchPath(wgpuPath)
+        ]
     )
 ]
 
