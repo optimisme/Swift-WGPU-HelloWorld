@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export RUST_BACKTRACE=1
+
 # Reset the terminal
 reset
 
@@ -9,8 +11,6 @@ swift package clean
 
 # Build the project with Swift
 # swift build --target WgpuTriangle
-
-export RUST_BACKTRACE=1
 
 swift run WgpuTriangle
 
