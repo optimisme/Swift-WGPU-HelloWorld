@@ -37,7 +37,7 @@ Two triangles filled with one texture from a Cairo drawing (WgpuCairo):
 
 ## About WGPU binaries 
 
-WGPU binaries are found in the **Frameworks** folder and have been downloaded from:
+WGPU binaries are found in the **WGPU** folder and have been downloaded from:
 
 [WGPU v0.19.4.1](https://github.com/gfx-rs/wgpu-native/releases)
 
