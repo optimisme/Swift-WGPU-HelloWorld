@@ -18,7 +18,6 @@ func createRenderPipeline(device: WGPUDevice, texture: WGPUTexture) -> (WGPURend
     }
 
     // Create shader modules
-   // Create shader modules
     let vertexShaderModule = createShaderModule(device: device, source: vertexShaderSource)
     let fragmentShaderModule = createShaderModule(device: device, source: fragmentShaderSource)
 
