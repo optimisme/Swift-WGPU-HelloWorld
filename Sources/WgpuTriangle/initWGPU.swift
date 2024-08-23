@@ -2,16 +2,6 @@ import Foundation
 import SDL2
 import wgpu
 
-#if os(macOS)
-import Cocoa
-import Foundation
-import QuartzCore
-#elseif os(Linux)
-import X11
-#endif
-
-
-
 var semaphore: DispatchSemaphore? = nil
 var globalDevice: WGPUDevice? = nil
 
@@ -34,27 +24,15 @@ func initWGPU(window: OpaquePointer) -> (surface: WGPUSurface, device: WGPUDevic
     size.height = max(size.height, 1)
 
     // Crear WGPU instance
-    #if os(macOS)
     var extras = WGPUInstanceExtras(
-        chain: WGPUChainedStruct(next: nil, sType: WGPUSType_SurfaceDescriptorFromMetalLayer),
-        backends: WGPUInstanceBackendFlags(WGPUInstanceBackend_Metal.rawValue),
+        chain: WGPUChainedStruct(next: nil, sType: BACKEND_CHAIN),
+        backends: WGPUInstanceBackendFlags(BACKEND_FLAGS),
         flags: 0,
         dx12ShaderCompiler: WGPUDx12Compiler_Dxc,
         gles3MinorVersion: WGPUGles3MinorVersion_Automatic,
         dxilPath: nil,
         dxcPath: nil
     )
-    #elseif os(Linux)
-    var extras = WGPUInstanceExtras(
-        chain: WGPUChainedStruct(next: nil, sType: WGPUSType_SurfaceDescriptorFromXlibWindow),
-        backends: WGPUInstanceBackendFlags(WGPUInstanceBackend_Vulkan.rawValue),
-        flags: 0,
-        dx12ShaderCompiler: WGPUDx12Compiler_Dxc,
-        gles3MinorVersion: WGPUGles3MinorVersion_Automatic,
-        dxilPath: nil,
-        dxcPath: nil
-    )
-    #endif
 
     var descriptor = withUnsafePointer(to: &extras.chain) { chainPointer in WGPUInstanceDescriptor(nextInChain: chainPointer) }
     guard let instance = withUnsafePointer(to: &descriptor, { wgpuCreateInstance($0) }) else {
@@ -64,14 +42,8 @@ func initWGPU(window: OpaquePointer) -> (surface: WGPUSurface, device: WGPUDevic
     // List adapters
     print("Available adapters:")
     
-    #if os(macOS)
-    let backendFlags: WGPUInstanceBackendFlags = WGPUInstanceBackendFlags(WGPUInstanceBackend_Metal.rawValue)
+    let backendFlags: WGPUInstanceBackendFlags = WGPUInstanceBackendFlags(BACKEND_FLAGS)
     var enumerateOptions = WGPUInstanceEnumerateAdapterOptions(nextInChain: nil, backends: backendFlags)
-    #elseif os(Linux)
-    let backendFlags: WGPUInstanceBackendFlags = WGPUInstanceBackendFlags(WGPUInstanceBackend_Vulkan.rawValue) 
-    var enumerateOptions = WGPUInstanceEnumerateAdapterOptions(nextInChain: nil, backends: backendFlags)   
-    #endif
-
     let adapterCount = wgpuInstanceEnumerateAdapters(instance, &enumerateOptions, nil)
     var adapters: [WGPUAdapter?] = Array(repeating: nil, count: Int(adapterCount))
     let bufferPointer = adapters.withUnsafeMutableBufferPointer { $0 }
@@ -87,15 +59,9 @@ func initWGPU(window: OpaquePointer) -> (surface: WGPUSurface, device: WGPUDevic
     }
 
     // Get a surface
-    #if os(macOS)
-    guard let surface = SDL_GetWGPUSurfaceMacOS(instance: instance, window: window) else {
+    guard let surface = getWGPUSurface(instance: instance, window: window) else {
         fatalError("Failed to create WGPU surface")
     }
-    #elseif os(Linux)
-    guard let surface = SDL_GetWGPUSurfaceLinux(instance: instance, window: window) else {
-        fatalError("Failed to create WGPU surface")
-    }
-    #endif
 
     // Get an adapter
     var adapter: WGPUAdapter? = nil
@@ -169,73 +135,6 @@ func initWGPU(window: OpaquePointer) -> (surface: WGPUSurface, device: WGPUDevic
     
     return (surface, device, queue, surfaceConfig)
 }
-#if os(macOS)
-func SDL_GetWGPUSurfaceMacOS(instance: WGPUInstance, window: OpaquePointer) -> WGPUSurface? {
-    var windowWMInfo = SDL_SysWMinfo()
-
-    // Obtenim la informació de la finestra SDL
-    windowWMInfo.version.major = Uint8(SDL_MAJOR_VERSION)
-    windowWMInfo.version.minor = Uint8(SDL_MINOR_VERSION)
-    windowWMInfo.version.patch = Uint8(SDL_PATCHLEVEL)
-
-    SDL_GetWindowWMInfo(window, &windowWMInfo)
-
-    guard let nsWindow = windowWMInfo.info.cocoa.window?.takeUnretainedValue() else {
-        return nil
-    }
-
-    nsWindow.contentView?.wantsLayer = true
-    let metalLayer = CAMetalLayer()
-    nsWindow.contentView?.layer = metalLayer
-
-    var metalLayerDesc = WGPUSurfaceDescriptorFromMetalLayer(
-        chain: WGPUChainedStruct(next: nil, sType: WGPUSType_SurfaceDescriptorFromMetalLayer),
-        layer: Unmanaged.passUnretained(metalLayer).toOpaque()
-    )
-
-    return withUnsafePointer(to: &metalLayerDesc.chain) { chainPtr in
-        var surfaceDesc = WGPUSurfaceDescriptor(
-            nextInChain: chainPtr,
-            label: nil
-        )
-        return wgpuInstanceCreateSurface(instance, &surfaceDesc)
-    }
-}
-#elseif os(Linux)
-func SDL_GetWGPUSurfaceLinux(instance: WGPUInstance, window: OpaquePointer) -> WGPUSurface? {
-    var windowWMInfo = SDL_SysWMinfo()
-
-    // Obtenim la informació de la finestra SDL
-    windowWMInfo.version.major = Uint8(SDL_MAJOR_VERSION)
-    windowWMInfo.version.minor = Uint8(SDL_MINOR_VERSION)
-    windowWMInfo.version.patch = Uint8(SDL_PATCHLEVEL)
-
-    SDL_GetWindowWMInfo(window, &windowWMInfo)
-
-    // Verifiquem que el sistema de finestres és X11
-    guard let display = windowWMInfo.info.x11.display else {
-        fatalError("No s'ha pogut obtenir el display de X11")
-    }
-
-    let window = windowWMInfo.info.x11.window
-
-    // Creem la descripció de la superfície Xlib
-    var xlibSurfaceDesc = WGPUSurfaceDescriptorFromXlibWindow(
-        chain: WGPUChainedStruct(next: nil, sType: WGPUSType_SurfaceDescriptorFromXlibWindow),
-        display: UnsafeMutableRawPointer(display),
-        window: UInt64(window) // Convertim a UInt64
-    )
-
-    // Creem la superfície utilitzant el descritor
-    return withUnsafePointer(to: &xlibSurfaceDesc.chain) { chainPtr in
-        var surfaceDesc = WGPUSurfaceDescriptor(
-            nextInChain: chainPtr, // Utilitzem el punter a la cadena
-            label: nil
-        )
-        return wgpuInstanceCreateSurface(instance, &surfaceDesc)
-    }
-}
-#endif
 
 func requestAdapterCallback(status: WGPURequestAdapterStatus, requestedAdapter: WGPUAdapter?, message: UnsafePointer<CChar>?, userData: UnsafeMutableRawPointer?) {
     print("Adapter callback executed with status: \(status.rawValue)")
