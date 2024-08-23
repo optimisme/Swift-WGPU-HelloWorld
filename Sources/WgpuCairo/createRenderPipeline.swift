@@ -5,25 +5,24 @@ import Cairo
 
 func createRenderPipeline(device: WGPUDevice, texture: WGPUTexture) -> (WGPURenderPipeline, WGPUBindGroup) {
 
-    let vertexShaderSource: String?
-    vertexShaderSource = readFile(named: "Assets/vertex_shader.wgsl")
+    let vertexShaderSource = readFile(named: "Assets/vertex_shader.wgsl")
 
     guard let vertexShaderSource = vertexShaderSource else {
         fatalError("Could not load vertex shader")
     }
     
-    let fragmentShaderSource: String?
-    fragmentShaderSource = readFile(named: "Assets/fragment_shader.wgsl")
+    let fragmentShaderSource = readFile(named: "Assets/fragment_shader.wgsl")
     
     guard let fragmentShaderSource = fragmentShaderSource else {
         fatalError("Could not load fragment shader")
     }
 
     // Create shader modules
+   // Create shader modules
     let vertexShaderModule = createShaderModule(device: device, source: vertexShaderSource)
     let fragmentShaderModule = createShaderModule(device: device, source: fragmentShaderSource)
 
-    // Set up the vertex state
+    // Vertex state setup
     let entryPoint = getUtf8String(from: "vs_main")
     let vertexState = WGPUVertexState(
         nextInChain: nil,
@@ -35,14 +34,33 @@ func createRenderPipeline(device: WGPUDevice, texture: WGPUTexture) -> (WGPURend
         buffers: nil
     )
 
-    // Set up the fragment state
-    var colorTargetState = WGPUColorTargetState(
+    // Create blending state
+    var blendState = WGPUBlendState(
+        color: WGPUBlendComponent(
+            operation: WGPUBlendOperation_Add,
+            srcFactor: WGPUBlendFactor_SrcAlpha,
+            dstFactor: WGPUBlendFactor_OneMinusSrcAlpha
+        ),
+        alpha: WGPUBlendComponent(
+            operation: WGPUBlendOperation_Add,
+            srcFactor: WGPUBlendFactor_One,
+            dstFactor: WGPUBlendFactor_OneMinusSrcAlpha
+        )
+    )
+
+    // Set up color target state with blending
+    let colorTargetStatePtr = withUnsafePointer(to: &blendState) { $0 }
+    let colorTargetState = WGPUColorTargetState(
         nextInChain: nil,
         format: WGPUTextureFormat_BGRA8Unorm,
-        blend: nil,
+        blend: colorTargetStatePtr,
         writeMask: WGPUColorWriteMask_All.rawValue
     )
-    let colorTargetStatePtr = withUnsafePointer(to: &colorTargetState) { $0 }
+
+    let colorTargetStates = [colorTargetState]
+    let targetsPtr = colorTargetStates.withUnsafeBufferPointer { bufferPointer in
+        bufferPointer.baseAddress
+    }
     let entryPointFragment = getUtf8String(from: "fs_main")
     var fragmentState = WGPUFragmentState(
         nextInChain: nil,
@@ -51,35 +69,31 @@ func createRenderPipeline(device: WGPUDevice, texture: WGPUTexture) -> (WGPURend
         constantCount: 0,
         constants: nil,
         targetCount: 1,
-        targets: colorTargetStatePtr
+        targets: targetsPtr 
     )
 
-    let labelPtr = getUtf8String(from: "Simple Render Pipeline")
-    let fragmentStatePtr: UnsafePointer<WGPUFragmentState>? = withUnsafePointer(to: &fragmentState) { $0 }
-    var primitiveState = WGPUPrimitiveState(
-        nextInChain: nil, 
-        topology: WGPUPrimitiveTopology_TriangleList,
-        stripIndexFormat: WGPUIndexFormat_Undefined,
-        frontFace: WGPUFrontFace_CCW,
-        cullMode: WGPUCullMode_None
-    )
-    let primitiveStatePtr = withUnsafePointer(to: &primitiveState) { $0 }
-    var multisampleState = WGPUMultisampleState(
-        nextInChain: nil, 
-        count: 1,
-        mask: ~0,
-        alphaToCoverageEnabled: WGPUBool(false ? 1 : 0) 
-    )
-    let multisampleStatePtr = withUnsafePointer(to: &multisampleState) { $0 }
+    // Pipeline descriptor
+    let fragmentStatePtr = withUnsafePointer(to: &fragmentState) { $0 }
     var pipelineDescriptor = WGPURenderPipelineDescriptor(
         nextInChain: nil,
-        label: labelPtr,
+        label: getUtf8String(from: "Simple Render Pipeline"),
         layout: nil,
         vertex: vertexState,
-        primitive: primitiveStatePtr.pointee,
+        primitive: WGPUPrimitiveState(
+            nextInChain: nil, 
+            topology: WGPUPrimitiveTopology_TriangleList,
+            stripIndexFormat: WGPUIndexFormat_Undefined,
+            frontFace: WGPUFrontFace_CCW,
+            cullMode: WGPUCullMode_None
+        ),
         depthStencil: nil,
-        multisample: multisampleStatePtr.pointee,
-        fragment: fragmentStatePtr // Pass the pointer directly
+        multisample: WGPUMultisampleState(
+            nextInChain: nil, 
+            count: 1,
+            mask: ~0,
+            alphaToCoverageEnabled: WGPUBool(false ? 1 : 0) 
+        ),
+        fragment: fragmentStatePtr // Pass the address of fragment state
     )
 
     let renderPipeline = wgpuDeviceCreateRenderPipeline(device, &pipelineDescriptor)

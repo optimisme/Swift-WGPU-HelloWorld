@@ -4,28 +4,32 @@ import wgpu
 import Cairo
 
 func createCairoTexture(device: WGPUDevice, queue: WGPUQueue, width: Int, height: Int) -> WGPUTexture {
-
-    // Crear la superfície Cairo
+    // Create Cairo surface
     let surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, Int32(width), Int32(height))
     let cr = cairo_create(surface)
 
-    // Cairo drawing
-    cairo_set_source_rgb(cr, 0.0, 1.0, 0.0) // Verd
+    // Create a linear gradient
+    let gradient = cairo_pattern_create_linear(0, 0, 0, Double(height))
+    cairo_pattern_add_color_stop_rgba(gradient, 0, 0.0, 1.0, 0.0, 1.0) // Fully opaque green
+    cairo_pattern_add_color_stop_rgba(gradient, 1, 0.0, 1.0, 0.0, 0.0) // Fully transparent
+    cairo_set_source(cr, gradient)
     cairo_paint(cr)
 
-    // Dibuixar la línia vermella de punta a punta
+    // Red crossing line
     cairo_set_source_rgb(cr, 1.0, 0.0, 0.0)
     cairo_move_to(cr, 0, 0)
     cairo_line_to(cr, Double(width), Double(height))
     cairo_set_line_width(cr, 5.0)
     cairo_stroke(cr)
 
-    cairo_set_source_rgb(cr, 0.0, 0.0, 0.0) // Negre
+    // Text rendering
+    cairo_set_source_rgb(cr, 0.0, 0.0, 0.0)
     cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
     cairo_set_font_size(cr, 48)
     cairo_move_to(cr, 50, 100) 
     cairo_show_text(cr, "Hello WGPU")
 
+    // Check for errors
     let status = cairo_status(cr)
     if status != CAIRO_STATUS_SUCCESS {
         print("Error drawing text: \(cairo_status_to_string(status)!)")
@@ -33,19 +37,19 @@ func createCairoTexture(device: WGPUDevice, queue: WGPUQueue, width: Int, height
 
     cairo_destroy(cr)
 
-    // Obtenir les dades de la superfície
+    // Obtain surface data
     let data = cairo_image_surface_get_data(surface)
     let stride = cairo_image_surface_get_stride(surface)
     let bufferSize = stride * Int32(height)
 
-    // Crear una textura WGPU
+    // Create WGPU texture with BGRA8Unorm format
     var textureDescriptor = WGPUTextureDescriptor(
         nextInChain: nil,
         label: nil,
         usage: WGPUTextureUsage_CopyDst.rawValue | WGPUTextureUsage_TextureBinding.rawValue,
         dimension: WGPUTextureDimension_2D,
         size: WGPUExtent3D(width: UInt32(width), height: UInt32(height), depthOrArrayLayers: 1),
-        format: WGPUTextureFormat_BGRA8Unorm,
+        format: WGPUTextureFormat_BGRA8Unorm, // Ensure this format supports transparency
         mipLevelCount: 1,
         sampleCount: 1,
         viewFormatCount: 0,
@@ -53,9 +57,9 @@ func createCairoTexture(device: WGPUDevice, queue: WGPUQueue, width: Int, height
     )
     let texture = wgpuDeviceCreateTexture(device, &textureDescriptor)
     
-    // Transferir les dades a la textura WGPU
+    // Transfer data to WGPU texture
     var textureCopy = WGPUImageCopyTexture(
-        nextInChain: nil,  // Afegir nil per a nextInChain
+        nextInChain: nil,
         texture: texture,
         mipLevel: 0,
         origin: WGPUOrigin3D(x: 0, y: 0, z: 0),
@@ -63,7 +67,7 @@ func createCairoTexture(device: WGPUDevice, queue: WGPUQueue, width: Int, height
     )
 
     var dataLayout = WGPUTextureDataLayout(
-        nextInChain: nil,  // Afegir nil per a nextInChain
+        nextInChain: nil,
         offset: 0,
         bytesPerRow: UInt32(stride),
         rowsPerImage: UInt32(height)
@@ -73,7 +77,7 @@ func createCairoTexture(device: WGPUDevice, queue: WGPUQueue, width: Int, height
     
     wgpuQueueWriteTexture(queue, &textureCopy, data, Int(bufferSize), &dataLayout, &extent)
 
-    // Alliberar la superfície Cairo
+    // Free cairo surface
     cairo_surface_destroy(surface)
     
     guard let texture = texture else {
