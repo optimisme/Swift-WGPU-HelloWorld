@@ -1,1 +1,0 @@
-let bundleID = "/WgpuHelloWorld_WgpuCairo"

@@ -16,29 +16,37 @@ func getStringFromUtf8(from cString: UnsafePointer<CChar>) -> String? {
 
 func readFile(named filePath: String) -> String? {
 
-    guard let resourcePath = Bundle.main.resourcePath else {
-        print("Could not access bundle.")
-        return nil
+    guard let bundlePath = Bundle.main.resourcePath else {
+        fatalError("Could not access bundle.")
     }
 
-    let resourcesPath = resourcePath + "/" + bundleID + ".resources"
-
-    guard let resourceBundle = Bundle(path: resourcesPath) else {
-        print("Could not find resources bundle.")
-        return nil
-    }
-    
-    guard let fileURL = resourceBundle.url(forResource: filePath, withExtension: nil) else {
-        print("File not found: \(filePath)")
-        return nil
-    }
-    
     do {
-        let fileContents = try String(contentsOf: fileURL, encoding: .utf8)
-        return fileContents
+        var foundContent: String? = nil
+        let fileManager = FileManager.default
+        let contents = try fileManager.contentsOfDirectory(atPath: bundlePath)
+        let filteredContents = contents.filter { item in
+            item.hasSuffix(".bundle") || item.hasSuffix(".resources")
+        }
+
+        for bundleName in filteredContents {
+            let fullPath = "\(bundlePath)/\(bundleName)/\(filePath)"
+            if FileManager.default.fileExists(atPath: fullPath) {
+                do {
+                    foundContent = try String(contentsOfFile: fullPath, encoding: .utf8)
+                    break
+                } catch {
+                    print("Error llegint el fitxer: \(error.localizedDescription)")
+                }
+            }
+        }
+
+        if let content = foundContent {
+            return content
+        } else {
+            fatalError("File not found: \(filePath)")
+        }
     } catch {
-        print("Failed to read file: \(error)")
-        return nil
+        fatalError("Could not read path: \(error.localizedDescription)")
     }
 }
 
@@ -68,7 +76,7 @@ func listBundle(directory: String) {
             }
         }
     } catch {
-        print("Error reding folder '\(directory)': \(error)")
+        fatalError("Error reading folder '\(directory)': \(error)")
     }
 }
 
