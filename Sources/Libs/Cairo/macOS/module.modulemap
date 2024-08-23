@@ -1,0 +1,5 @@
+module Cairo {
+    header "/opt/homebrew/include/cairo/cairo.h"
+    link "cairo"
+    export *
+}

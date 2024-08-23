@@ -1,0 +1,10 @@
+module X11 [system] {
+    header "/usr/include/X11/Xlib.h"
+    header "/usr/include/X11/Xutil.h"
+    header "/usr/include/X11/Xos.h"
+    header "/usr/include/X11/Xatom.h"
+    header "/usr/include/X11/Xresource.h"
+    header "/usr/include/X11/keysym.h"
+    header "/usr/include/X11/XKBlib.h"
+    export *
+}

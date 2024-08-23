@@ -1,0 +1,5 @@
+module Cairo {
+    header "/usr/include/cairo/cairo.h"
+    link "cairo"
+    export *
+}

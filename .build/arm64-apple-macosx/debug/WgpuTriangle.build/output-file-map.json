@@ -1,0 +1,35 @@
+{
+  "": {
+    "swift-dependencies": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/master.swiftdeps"
+  },
+  "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/Sources/WgpuTriangle/createRenderPipeline.swift": {
+    "dependencies": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/createRenderPipeline.d",
+    "object": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/createRenderPipeline.swift.o",
+    "swiftmodule": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/createRenderPipeline~partial.swiftmodule",
+    "swift-dependencies": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/createRenderPipeline.swiftdeps"
+  },
+  "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/Sources/WgpuTriangle/drawFrame.swift": {
+    "dependencies": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/drawFrame.d",
+    "object": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/drawFrame.swift.o",
+    "swiftmodule": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/drawFrame~partial.swiftmodule",
+    "swift-dependencies": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/drawFrame.swiftdeps"
+  },
+  "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/Sources/WgpuTriangle/initWGPU.swift": {
+    "dependencies": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/initWGPU.d",
+    "object": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/initWGPU.swift.o",
+    "swiftmodule": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/initWGPU~partial.swiftmodule",
+    "swift-dependencies": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/initWGPU.swiftdeps"
+  },
+  "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/Sources/WgpuTriangle/main.swift": {
+    "dependencies": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/main.d",
+    "object": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/main.swift.o",
+    "swiftmodule": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/main~partial.swiftmodule",
+    "swift-dependencies": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/main.swiftdeps"
+  },
+  "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/Sources/WgpuTriangle/utils.swift": {
+    "dependencies": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/utils.d",
+    "object": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/utils.swift.o",
+    "swiftmodule": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/utils~partial.swiftmodule",
+    "swift-dependencies": "/Users/albertpalaciosjimenez/Documents/GitHub/Swift-WGPU-HelloWorld/.build/arm64-apple-macosx/debug/WgpuTriangle.build/utils.swiftdeps"
+  }
+}
