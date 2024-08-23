@@ -6,14 +6,14 @@ import Cairo
 func createRenderPipeline(device: WGPUDevice, texture: WGPUTexture) -> (WGPURenderPipeline, WGPUBindGroup) {
 
     let vertexShaderSource: String?
-    vertexShaderSource = readFile(named: "Shaders/vertex_shader.wgsl")
+    vertexShaderSource = readFile(named: "Assets/vertex_shader.wgsl")
 
     guard let vertexShaderSource = vertexShaderSource else {
         fatalError("Could not load vertex shader")
     }
     
     let fragmentShaderSource: String?
-    fragmentShaderSource = readFile(named: "Shaders/fragment_shader.wgsl")
+    fragmentShaderSource = readFile(named: "Assets/fragment_shader.wgsl")
     
     guard let fragmentShaderSource = fragmentShaderSource else {
         fatalError("Could not load fragment shader")

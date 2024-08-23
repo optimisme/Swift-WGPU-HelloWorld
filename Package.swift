@@ -68,7 +68,7 @@ let targets: [Target] = [
         dependencies: dependencies,
         path: "Sources/WgpuCairo",
         resources: [
-            .copy("Shaders/"),
+            .copy("Assets/"),
         ],
         swiftSettings: swiftSettings,
         linkerSettings: linkedLibraries + linkerSettings
