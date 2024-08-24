@@ -6,6 +6,19 @@ It works on macOS and Linux.
 
 The WGPU backend works on macOS with Metal and on Linux with Vulkan. For this reason, the dependencies are different.
 
+The WGPU backend is imported from [SwiftWgpuTools](https://github.com/optimisme/SwiftWgpuTools/tree/main)
+
+```swift
+  dependencies: [
+      .package(url: "https://github.com/optimisme/SwiftWgpuTools.git", branch:"main")
+  ],
+```
+
+And to use it:
+```swift
+import SwiftWgpuTools
+```
+
 ## Install dependencies
 
 ### Linux
