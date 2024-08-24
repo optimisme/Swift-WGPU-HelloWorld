@@ -3,6 +3,7 @@ import PackageDescription
 
 let cairoPath: String
 let sdl2Path: String
+let wgpuBasePath = ".build/checkouts/SwiftWgpuTools/Sources/Libs/Wgpu/"
 
 #if os(macOS)
 cairoPath = "Sources/Libs/Cairo/macOS"
@@ -22,9 +23,9 @@ var swiftSettings: [SwiftSetting] = []
 var linkerSettings: [LinkerSetting] = []
 
 #if os(macOS)
+let wgpuLibPath = wgpuBasePath + "/wgpu-macos-aarch64-release"
 swiftSettings.append(.unsafeFlags(["-I/opt/homebrew/include/SDL2"]))
-swiftSettings.append(.unsafeFlags(["-I" + ".build/checkouts/SwiftWgpuTools/Sources/Libs/Wgpu/wgpu-macos-aarch64-release/include"]))
-let wgpuLibPath = ".build/checkouts/SwiftWgpuTools/Sources/Libs/Wgpu/wgpu-macos-aarch64-release"
+swiftSettings.append(.unsafeFlags(["-I" + wgpuLibPath + "/include"]))
 linkerSettings.append(contentsOf: [
     .unsafeFlags(["-L/opt/homebrew/lib"]),
     .unsafeFlags(["-L" + wgpuLibPath]),
@@ -34,9 +35,9 @@ linkerSettings.append(contentsOf: [
 #endif
 
 #if os(Linux)
+let wgpuLibPath = wgpuBasePath + "/wgpu-linux-x86_64-release"
 swiftSettings.append(.unsafeFlags(["-I/usr/include/SDL2"]))
-swiftSettings.append(.unsafeFlags(["-I" + ".build/checkouts/SwiftWgpuTools/Sources/Libs/Wgpu/wgpu-linux-x86_64-release/include"]))
-let wgpuLibPath = ".build/checkouts/SwiftWgpuTools/Sources/Libs/Wgpu/wgpu-linux-x86_64-release"
+swiftSettings.append(.unsafeFlags(["-I" + wgpuLibPath + "/include"]))
 linkerSettings.append(contentsOf: [
     .unsafeFlags(["-L/usr/lib"]),
     .unsafeFlags(["-L/usr/lib/x86_64-linux-gnu"]),
