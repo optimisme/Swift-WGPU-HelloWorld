@@ -17,11 +17,18 @@ class AdapterRequestData {
 
 func initWGPU(window: OpaquePointer) -> (surface: WGPUSurface, device: WGPUDevice, queue: WGPUQueue, config: WGPUSurfaceConfiguration) {
 
-    // Get window size
-    var size = (width: Int32(0), height: Int32(0))
-    SDL_GetWindowSize(window, &size.width, &size.height)
-    size.width = max(size.width, 1)
-    size.height = max(size.height, 1)
+    // Get window size & scaleFactor
+    var drawableSize = (width: Int32(0), height: Int32(0))
+    SDL_GL_GetDrawableSize(window, &drawableSize.width, &drawableSize.height)
+    drawableSize.width = max(drawableSize.width, 1)
+    drawableSize.height = max(drawableSize.height, 1)
+
+    var logicalSize = (width: Int32(0), height: Int32(0))
+    SDL_GetWindowSize(window, &logicalSize.width, &logicalSize.height)
+    logicalSize.width = max(logicalSize.width, 1)
+    logicalSize.height = max(logicalSize.height, 1)
+
+    let scaleFactor = Double(drawableSize.width) / Double(logicalSize.width)
 
     // Crear WGPU instance
     var extras = WGPUInstanceExtras(
@@ -127,8 +134,8 @@ func initWGPU(window: OpaquePointer) -> (surface: WGPUSurface, device: WGPUDevic
         viewFormatCount: 0, // Set to 0 if you're not using additional view formats
         viewFormats: nil,   // Set to nil if no additional view formats are used
         alphaMode: WGPUCompositeAlphaMode_Auto, // Default alpha mode
-        width: UInt32(size.width),
-        height: UInt32(size.height),
+        width: UInt32(Double(logicalSize.width) * scaleFactor),
+        height: UInt32(Double(logicalSize.height) * scaleFactor),
         presentMode: WGPUPresentMode_Fifo // The present mode used in the original code
     )
     wgpuSurfaceConfigure(surface, &surfaceConfig)

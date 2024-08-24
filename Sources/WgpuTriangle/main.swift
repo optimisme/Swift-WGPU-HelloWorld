@@ -15,7 +15,6 @@ func main() {
     cleanup(window: window)
 }
 
-
 func initSDL() {
     SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "0")
     if SDL_Init(SDL_INIT_VIDEO) != 0 {
@@ -35,6 +34,7 @@ func initWindow() -> OpaquePointer {
         SDL_Quit()
         fatalError("Window could not be created! SDL_Error: \(String(cString: SDL_GetError()))")
     }
+
     return window
 }
 
