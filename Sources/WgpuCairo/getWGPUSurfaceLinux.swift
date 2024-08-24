@@ -1,7 +1,7 @@
 #if os(Linux)
 import Foundation
 import SDL2
-import wgpu
+import SwiftWgpuTools
 import X11
 
 let BACKEND_CHAIN = WGPUSType_SurfaceDescriptorFromXlibWindow

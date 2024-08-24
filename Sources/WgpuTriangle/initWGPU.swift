@@ -1,6 +1,6 @@
 import Foundation
 import SDL2
-import wgpu
+import SwiftWgpuTools
 
 var semaphore: DispatchSemaphore? = nil
 var globalDevice: WGPUDevice? = nil

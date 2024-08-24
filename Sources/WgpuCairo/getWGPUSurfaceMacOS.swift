@@ -4,7 +4,7 @@ import Cocoa
 import Foundation
 import QuartzCore
 import SDL2
-import wgpu
+import SwiftWgpuTools
 
 let BACKEND_CHAIN = WGPUSType_SurfaceDescriptorFromMetalLayer
 let BACKEND_FLAGS = WGPUInstanceBackend_Metal.rawValue

@@ -3,22 +3,19 @@ import PackageDescription
 
 let cairoPath: String
 let sdl2Path: String
-let wgpuPath: String
 let vulkanPath: String?
 
 #if os(macOS)
 cairoPath = "Sources/Libs/Cairo/macOS"
 sdl2Path = "Sources/Libs/SDL2/macOS"
-wgpuPath = "WGPU/wgpu-macos-aarch64-release"
 vulkanPath = nil // Not used on macOS
 #elseif os(Linux)
 cairoPath = "Sources/Libs/Cairo/Linux"
 sdl2Path = "Sources/Libs/SDL2/Linux"
-wgpuPath = "WGPU/wgpu-linux-x86_64-release"
 vulkanPath = "Sources/Libs/Vulkan/Linux"
 #endif
 
-var dependencies: [Target.Dependency] = ["Cairo", "SDL2", "Wgpu"]
+var dependencies: [Target.Dependency] = ["Cairo", "SDL2", "SwiftWgpuTools"]
 var linkedLibraries: [LinkerSetting] = [
     .linkedLibrary("cairo"),
     .linkedLibrary("SDL2")
@@ -29,23 +26,27 @@ var linkerSettings: [LinkerSetting] = []
 
 #if os(macOS)
 swiftSettings.append(.unsafeFlags(["-I/opt/homebrew/include/SDL2"]))
-swiftSettings.append(.unsafeFlags(["-I" + wgpuPath]))
+swiftSettings.append(.unsafeFlags(["-I" + ".build/checkouts/SwiftWgpuTools/Sources/Libs/Wgpu/wgpu-macos-aarch64-release/include"]))
+let wgpuLibPath = ".build/checkouts/SwiftWgpuTools/Sources/Libs/Wgpu/wgpu-macos-aarch64-release"
 linkerSettings.append(contentsOf: [
     .unsafeFlags(["-L/opt/homebrew/lib"]),
-    .unsafeFlags(["-L" + wgpuPath]),
-    .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", wgpuPath])
+    .unsafeFlags(["-L" + wgpuLibPath]),
+    .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", wgpuLibPath]),
+    .linkedLibrary("wgpu_native")
 ])
 #endif
 
 #if os(Linux)
 swiftSettings.append(.unsafeFlags(["-I/usr/include/SDL2"]))
 swiftSettings.append(.unsafeFlags(["-I/usr/include/vulkan"]))
-swiftSettings.append(.unsafeFlags(["-I" + wgpuPath]))
+swiftSettings.append(.unsafeFlags(["-I" + ".build/checkouts/SwiftWgpuTools/Sources/Libs/Wgpu/wgpu-linux-x86_64-release/include"]))
+let wgpuLibPath = ".build/checkouts/SwiftWgpuTools/Sources/Libs/Wgpu/wgpu-linux-x86_64-release"
 linkerSettings.append(contentsOf: [
     .unsafeFlags(["-L/usr/lib"]),
     .unsafeFlags(["-L/usr/lib/x86_64-linux-gnu"]),
-    .unsafeFlags(["-L" + wgpuPath]),
-    .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", wgpuPath])
+    .unsafeFlags(["-L" + wgpuLibPath]),
+    .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", wgpuLibPath]),
+    .linkedLibrary("wgpu_native")
 ])
 dependencies.append("Vulkan")
 dependencies.append("X11")
@@ -89,13 +90,6 @@ let targets: [Target] = [
             .brew(["sdl2"]),
             .apt(["libsdl2-dev"])
         ]
-    ),
-    .target(
-        name: "Wgpu",
-        path: wgpuPath,
-        cSettings: [
-            .headerSearchPath(wgpuPath)
-        ]
     )
 ]
 
@@ -134,6 +128,8 @@ let package = Package(
             targets: ["WgpuTriangle"]
         )
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/optimisme/SwiftWgpuTools.git", branch:"main")
+    ],
     targets: finalTargets
 )

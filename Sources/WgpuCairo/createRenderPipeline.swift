@@ -1,6 +1,6 @@
 import Foundation
 import SDL2
-import wgpu
+import SwiftWgpuTools
 import Cairo
 
 func createRenderPipeline(device: WGPUDevice, texture: WGPUTexture) -> (WGPURenderPipeline, WGPUBindGroup) {

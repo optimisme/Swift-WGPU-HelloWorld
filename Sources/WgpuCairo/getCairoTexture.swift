@@ -1,6 +1,6 @@
 import Foundation
 import SDL2
-import wgpu
+import SwiftWgpuTools
 import Cairo
 
 func getCairoTexture(device: WGPUDevice, queue: WGPUQueue, width: Int, height: Int) -> WGPUTexture {

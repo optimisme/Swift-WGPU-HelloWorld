@@ -1,6 +1,6 @@
 import Foundation
 import SDL2
-import wgpu
+import SwiftWgpuTools
 
 func createRenderPipeline(device: WGPUDevice) -> WGPURenderPipeline {
     // WGSL shader source

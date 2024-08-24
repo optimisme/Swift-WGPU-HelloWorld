@@ -1,6 +1,6 @@
 import Foundation
 import SDL2
-import wgpu
+import SwiftWgpuTools
 
 func main() {
 
