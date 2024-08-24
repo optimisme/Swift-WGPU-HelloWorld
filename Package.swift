@@ -1,16 +1,14 @@
 // swift-tools-version: 5.10
 import PackageDescription
 
-let cairoPath: String
-let sdl2Path: String
 let wgpuBasePath = ".build/checkouts/SwiftWgpuTools/Sources/Libs/Wgpu/"
 
 #if os(macOS)
-cairoPath = "Sources/Libs/Cairo/macOS"
-sdl2Path = "Sources/Libs/SDL2/macOS"
+let cairoPath = "Sources/Libs/Cairo/macOS"
+let sdl2Path = "Sources/Libs/SDL2/macOS"
 #elseif os(Linux)
-cairoPath = "Sources/Libs/Cairo/Linux"
-sdl2Path = "Sources/Libs/SDL2/Linux"
+let cairoPath = "Sources/Libs/Cairo/Linux"
+let sdl2Path = "Sources/Libs/SDL2/Linux"
 #endif
 
 var dependencies: [Target.Dependency] = ["Cairo", "SDL2", "SwiftWgpuTools"]
