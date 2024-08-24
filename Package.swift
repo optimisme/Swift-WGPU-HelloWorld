@@ -3,16 +3,13 @@ import PackageDescription
 
 let cairoPath: String
 let sdl2Path: String
-let vulkanPath: String?
 
 #if os(macOS)
 cairoPath = "Sources/Libs/Cairo/macOS"
 sdl2Path = "Sources/Libs/SDL2/macOS"
-vulkanPath = nil // Not used on macOS
 #elseif os(Linux)
 cairoPath = "Sources/Libs/Cairo/Linux"
 sdl2Path = "Sources/Libs/SDL2/Linux"
-vulkanPath = "Sources/Libs/Vulkan/Linux"
 #endif
 
 var dependencies: [Target.Dependency] = ["Cairo", "SDL2", "SwiftWgpuTools"]
@@ -38,7 +35,6 @@ linkerSettings.append(contentsOf: [
 
 #if os(Linux)
 swiftSettings.append(.unsafeFlags(["-I/usr/include/SDL2"]))
-swiftSettings.append(.unsafeFlags(["-I/usr/include/vulkan"]))
 swiftSettings.append(.unsafeFlags(["-I" + ".build/checkouts/SwiftWgpuTools/Sources/Libs/Wgpu/wgpu-linux-x86_64-release/include"]))
 let wgpuLibPath = ".build/checkouts/SwiftWgpuTools/Sources/Libs/Wgpu/wgpu-linux-x86_64-release"
 linkerSettings.append(contentsOf: [
@@ -48,9 +44,7 @@ linkerSettings.append(contentsOf: [
     .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", wgpuLibPath]),
     .linkedLibrary("wgpu_native")
 ])
-dependencies.append("Vulkan")
 dependencies.append("X11")
-linkedLibraries.append(.linkedLibrary("vulkan"))
 linkedLibraries.append(.linkedLibrary("X11"))
 #endif
 
@@ -93,16 +87,8 @@ let targets: [Target] = [
     )
 ]
 
-// Conditionally add Vulkan target for Linux
+// Conditionally add X11 target for Linux
 #if os(Linux)
-let vulkanTarget = Target.systemLibrary(
-    name: "Vulkan",
-    path: vulkanPath!,
-    pkgConfig: "vulkan",
-    providers: [
-        .apt(["libvulkan-dev", "libvulkan1"])
-    ]
-)
 let x11Target = Target.systemLibrary(
     name: "X11",
     path: "Sources/Libs/X11/Linux",
@@ -111,7 +97,7 @@ let x11Target = Target.systemLibrary(
         .apt(["libx11-dev"])
     ]
 )
-let finalTargets = targets + [vulkanTarget, x11Target]
+let finalTargets = targets + [x11Target]
 #else
 let finalTargets = targets
 #endif
