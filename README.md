@@ -10,17 +10,12 @@ The WGPU backend works on macOS with Metal and on Linux with Vulkan. For this re
 
 ### Linux
 ```bash
-sudo apt-get install libx11-dev 
-sudo apt-get install libcairo2-dev 
-sudo apt-get install libsdl2-dev 
-sudo apt-get install libvulkan-dev 
-sudo apt-get install libvulkan1
+sudo apt-get install libx11-dev libcairo2-dev libsdl2-dev libvulkan-dev libvulkan1
 ```
 
 ### macOS
 ```bash
-brew install cairo
-brew install sdl2
+brew install cairo sdl2
 ```
 
 ## How to run the example
@@ -37,7 +32,7 @@ Two triangles filled with one texture from a Cairo drawing (WgpuCairo):
 
 ## About WGPU binaries 
 
-WGPU binaries are found in the **Frameworks** folder and have been downloaded from:
+WGPU binaries are found in the **WGPU** folder and have been downloaded from:
 
 [WGPU v0.19.4.1](https://github.com/gfx-rs/wgpu-native/releases)
 
