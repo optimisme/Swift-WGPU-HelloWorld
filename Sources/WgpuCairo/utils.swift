@@ -1,5 +1,27 @@
 import Foundation
 
+class RequestData<T> {
+    var pointer: UnsafeMutablePointer<T?>
+    private var semaphore: DispatchSemaphore
+
+    init(pointer: UnsafeMutablePointer<T?>) {
+        self.pointer = pointer
+        self.semaphore = DispatchSemaphore(value: 0)
+    }
+
+    func wait() {
+        semaphore.wait()
+    }
+
+    func signal() {
+        semaphore.signal()
+    }
+
+    func getRawPointer() -> UnsafeMutableRawPointer {
+        return UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
+    }
+}
+
 func getUtf8String(from swiftString: String) -> UnsafePointer<CChar>? {
     return swiftString.withCString { cString in
         if let copiedCString = strdup(cString) {

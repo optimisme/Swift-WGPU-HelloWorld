@@ -2,26 +2,6 @@ import Foundation
 import SDL2
 import SwiftWgpuTools
 
-class AdapterRequestData {
-    var adapter: UnsafeMutablePointer<WGPUAdapter?>
-    var semaphore: DispatchSemaphore
-
-    init(adapter: UnsafeMutablePointer<WGPUAdapter?>, semaphore: DispatchSemaphore) {
-        self.adapter = adapter
-        self.semaphore = semaphore
-    }
-}
-
-class DeviceRequestData {
-    var device: UnsafeMutablePointer<WGPUDevice?>
-    var semaphore: DispatchSemaphore
-
-    init(device: UnsafeMutablePointer<WGPUDevice?>, semaphore: DispatchSemaphore) {
-        self.device = device
-        self.semaphore = semaphore
-    }
-}
-
 func initWGPU(window: OpaquePointer) -> (surface: WGPUSurface, device: WGPUDevice, queue: WGPUQueue, config: WGPUSurfaceConfiguration) {
 
     // Get window size & scaleFactor
@@ -86,17 +66,13 @@ func initWGPU(window: OpaquePointer) -> (surface: WGPUSurface, device: WGPUDevic
         forceFallbackAdapter: WGPUBool(0)
     )
     
-    let adapterSemaphore = DispatchSemaphore(value: 0)
     
     // Crear un contenidor per a passar l'adapter i el semàfor
-    let userData = AdapterRequestData(adapter: &adapter, semaphore: adapterSemaphore)
-    let userDataPointer = UnsafeMutableRawPointer(Unmanaged.passUnretained(userData).toOpaque())
-    
-    wgpuInstanceRequestAdapter(instance, &options, requestAdapterCallback, userDataPointer)
+    let userRequestData = RequestData(pointer: &adapter)   
+    wgpuInstanceRequestAdapter(instance, &options, requestAdapterCallback, userRequestData.getRawPointer())
     
     print("Waiting Adapter Semaphore")
-    adapterSemaphore.wait()
-    print("Adapter Semaphore received")
+    userRequestData.wait()
 
     guard let adapter = adapter else {
         fatalError("Failed to get WGPU adapter")
@@ -115,16 +91,13 @@ func initWGPU(window: OpaquePointer) -> (surface: WGPUSurface, device: WGPUDevic
     )
 
     var device: WGPUDevice? = nil
-    let deviceSemaphore = DispatchSemaphore(value: 0)
     
-    let deviceUserData = DeviceRequestData(device: &device, semaphore: deviceSemaphore)
-    let deviceUserDataPointer = UnsafeMutableRawPointer(Unmanaged.passUnretained(deviceUserData).toOpaque())
-    
-    wgpuAdapterRequestDevice(adapter, &deviceDescriptor, requestDeviceCallback, deviceUserDataPointer)
-    
+    let deviceRequestData = RequestData(pointer: &device)   
+    wgpuAdapterRequestDevice(adapter, &deviceDescriptor, requestDeviceCallback, deviceRequestData.getRawPointer())
+
     print("Waiting Device Semaphore")
-    deviceSemaphore.wait()
-    print("Device Semaphore received")
+    deviceRequestData.wait()
+
     
     // Get the device and queue
     guard let device = device else {
@@ -156,10 +129,10 @@ func requestAdapterCallback(status: WGPURequestAdapterStatus, requestedAdapter: 
     print("Adapter callback executed with status: \(status.rawValue)")
     
     if let userData = userData {
-        let adapterRequestData = Unmanaged<AdapterRequestData>.fromOpaque(userData).takeUnretainedValue()
+        let requestData = Unmanaged<RequestData<WGPUAdapter>>.fromOpaque(userData).takeUnretainedValue()
 
         if status == WGPURequestAdapterStatus_Success, let adapter = requestedAdapter {
-            adapterRequestData.adapter.pointee = adapter
+            requestData.pointer.pointee = adapter
             var properties = WGPUAdapterProperties()
             wgpuAdapterGetProperties(adapter, &properties)
             print("Selected adapter:")
@@ -172,9 +145,8 @@ func requestAdapterCallback(status: WGPURequestAdapterStatus, requestedAdapter: 
             print("Adapter request failed: \(errorMessage)")
         }
 
-        print("Adapter Semaphore before signal")
-        adapterRequestData.semaphore.signal()
-        print("Adapter Semaphore after signal")
+        print("Adapter Semaphore signal")
+        requestData.signal()
     } else {
         print("Error: userData is nil")
     }
@@ -184,19 +156,18 @@ func requestDeviceCallback(status: WGPURequestDeviceStatus, requestedDevice: WGP
     print("Device callback executed with status: \(status.rawValue)")
 
     if let userData = userData {
-        let deviceRequestData = Unmanaged<DeviceRequestData>.fromOpaque(userData).takeUnretainedValue()
+        let requestData = Unmanaged<RequestData<WGPUDevice>>.fromOpaque(userData).takeUnretainedValue()
 
         if status == WGPURequestDeviceStatus_Success, let device = requestedDevice {
-            deviceRequestData.device.pointee = device
+            requestData.pointer.pointee = device
             print("WGPU device successfully created.")
         } else {
             let errorMessage = message != nil ? String(cString: message!) : "Unknown error"
             print("Device request failed: \(errorMessage)")
         }
 
-        print("Device Semaphore before signal")
-        deviceRequestData.semaphore.signal()
-        print("Device Semaphore after signal")
+        print("Device Semaphore signal")
+        requestData.signal()
     } else {
         print("Error: userData is nil")
     }
