@@ -68,11 +68,11 @@ func initWGPU(window: OpaquePointer) -> (surface: WGPUSurface, device: WGPUDevic
     
     
     // Crear un contenidor per a passar l'adapter i el semàfor
-    let userRequestData = RequestData(pointer: &adapter)   
-    wgpuInstanceRequestAdapter(instance, &options, requestAdapterCallback, userRequestData.getRawPointer())
+    let adapterRequestData = RequestData(pointer: &adapter)   
+    wgpuInstanceRequestAdapter(instance, &options, requestAdapterCallback, adapterRequestData.getRawPointer())
     
     print("Waiting Adapter Semaphore")
-    userRequestData.wait()
+    adapterRequestData.wait()
 
     guard let adapter = adapter else {
         fatalError("Failed to get WGPU adapter")
