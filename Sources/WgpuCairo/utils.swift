@@ -13,7 +13,7 @@ class RequestData<T> {
         semaphore.wait()
     }
 
-    func signal() {
+    func resumeSignal() {
         semaphore.signal()
     }
 

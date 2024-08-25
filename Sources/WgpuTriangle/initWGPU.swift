@@ -146,7 +146,7 @@ func requestAdapterCallback(status: WGPURequestAdapterStatus, requestedAdapter: 
         }
 
         print("Adapter Semaphore signal")
-        requestData.signal()
+        requestData.resumeSignal()
     } else {
         print("Error: userData is nil")
     }
@@ -167,7 +167,7 @@ func requestDeviceCallback(status: WGPURequestDeviceStatus, requestedDevice: WGP
         }
 
         print("Device Semaphore signal")
-        requestData.signal()
+        requestData.resumeSignal()
     } else {
         print("Error: userData is nil")
     }
