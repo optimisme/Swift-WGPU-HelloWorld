@@ -1,13 +1,13 @@
 {
-  "originHash" : "5cc1ebfaad367d1bc90e1e96a421b8e07d2e04bf93390bba940ef886728b46d3",
+  "originHash" : "39bcd50ab56a849c047538519120277836d280ff523403286e3458cbce96117c",
   "pins" : [
     {
       "identity" : "swiftwgputools",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/optimisme/SwiftWgpuTools.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "38a4f2669c61ceee44b9ca9698e286620768d9a5"
+        "revision" : "d22f71a1213e65259e8ec94307eb58f593b5d3e2",
+        "version" : "0.0.1"
       }
     }
   ],
