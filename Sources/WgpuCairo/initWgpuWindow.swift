@@ -2,7 +2,7 @@ import Foundation
 import SDL2
 import SwiftWgpuTools
 
-func initWgpuWindow(device: WGPUDevice, window: OpaquePointer, instance: OpaquePointer) -> (surface: WGPUSurface, config: WGPUSurfaceConfiguration) {
+func initWgpuWindow(device: WGPUDevice, window: OpaquePointer, instance: WGPUInstance) -> (surface: WGPUSurface, config: WGPUSurfaceConfiguration) {
     // Get a surface
     guard let surface = getWgpuSurface(instance: instance, window: window) else {
         fatalError("Failed to create WGPU surface")
