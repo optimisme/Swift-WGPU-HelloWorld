@@ -93,7 +93,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/optimisme/SwiftWgpuTools.git", .upToNextMajor(from: "0.0.2"))
+        .package(url: "https://github.com/optimisme/SwiftWgpuTools.git", .upToNextMajor(from: "0.0.3"))
     ],
     targets: targets
 )
