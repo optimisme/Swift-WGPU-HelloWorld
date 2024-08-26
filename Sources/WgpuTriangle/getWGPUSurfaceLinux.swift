@@ -7,7 +7,7 @@ import X11
 let BACKEND_CHAIN = WGPUSType_SurfaceDescriptorFromXlibWindow
 let BACKEND_FLAGS = WGPUInstanceBackend_Vulkan.rawValue
 
-func getWGPUSurface(instance: WGPUInstance, window: OpaquePointer) -> WGPUSurface? {
+func getWgpuSurface(instance: WGPUInstance, window: OpaquePointer) -> WGPUSurface? {
     var windowWMInfo = SDL_SysWMinfo()
 
     // Obtenim la informació de la finestra SDL

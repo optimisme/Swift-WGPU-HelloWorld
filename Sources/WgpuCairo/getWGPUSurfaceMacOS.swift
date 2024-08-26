@@ -9,7 +9,7 @@ import SwiftWgpuTools
 let BACKEND_CHAIN = WGPUSType_SurfaceDescriptorFromMetalLayer
 let BACKEND_FLAGS = WGPUInstanceBackend_Metal.rawValue
 
-func getWGPUSurface(instance: WGPUInstance, window: OpaquePointer) -> WGPUSurface? {
+func getWgpuSurface(instance: WGPUInstance, window: OpaquePointer) -> WGPUSurface? {
     var windowWMInfo = SDL_SysWMinfo()
 
     // Obtenim la informació de la finestra SDL

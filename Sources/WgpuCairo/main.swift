@@ -2,18 +2,21 @@ import Foundation
 import SDL2
 import SwiftWgpuTools
 
+
 func main() {
-    
     initSDL()
 
     let window = initWindow()
-    let (surface, device, queue, config) = initWGPU(window: window)
-    let cairoTexture = getCairoTexture(device: device, queue: queue, width: 512, height: 512)
+    let instance = initWGPU(window: window) 
+    let (device, queue) = initWgpuApp(instance: instance)
+    let (surface, config) = initWgpuWindow(device: device, window: window, instance: instance)
+    let cairoTexture = getCairoTexture(device: device, queue: queue, width: 512, height: 512)   
     let (renderPipeline, bindGroup) = createRenderPipeline(device: device, texture: cairoTexture)
 
     mainLoop(window: window, surface: surface, device: device, queue: queue, config: config, renderPipeline: renderPipeline, bindGroup: bindGroup)
     cleanup(window: window)
 }
+
 
 func initSDL() {
     SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "0")
@@ -34,6 +37,7 @@ func initWindow() -> OpaquePointer {
         SDL_Quit()
         fatalError("Window could not be created! SDL_Error: \(String(cString: SDL_GetError()))")
     }
+
     return window
 }
 

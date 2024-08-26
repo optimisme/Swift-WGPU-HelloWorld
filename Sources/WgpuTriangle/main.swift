@@ -2,16 +2,17 @@ import Foundation
 import SDL2
 import SwiftWgpuTools
 
-func main() {
 
+func main() {
     initSDL()
 
     let window = initWindow()
-    let (surface, device, queue, config) = initWGPU(window: window)
+    let instance = initWGPU(window: window) // Initialize WGPU instance
+    let (device, queue) = initWgpuApp(instance: instance)
+    let (surface, config) = initWgpuWindow(device: device, window: window, instance: instance)
     let renderPipeline = createRenderPipeline(device: device)
 
     mainLoop(window: window, surface: surface, device: device, queue: queue, config: config, renderPipeline: renderPipeline)
-
     cleanup(window: window)
 }
 
