@@ -7,7 +7,7 @@ func main() {
     initSDL()
 
     let window = initWindow()
-    let instance = initWgpu(window: window) // Initialize WGPU instance
+    let instance = initWgpu()
     let (device, queue) = initWgpuApp(instance: instance)
     let (surface, config) = initWgpuWindow(device: device, window: window, instance: instance)
     let renderPipeline = createRenderPipeline(device: device)

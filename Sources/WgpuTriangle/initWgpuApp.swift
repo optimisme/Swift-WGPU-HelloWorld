@@ -2,7 +2,7 @@ import Foundation
 import SDL2
 import SwiftWgpuTools
 
-func initWgpuApp(instance: OpaquePointer) -> (device: WGPUDevice, queue: WGPUQueue) {
+func initWgpuApp(instance: WGPUInstance) -> (device: WGPUDevice, queue: WGPUQueue) {
     // Get an adapter
     var options = WGPURequestAdapterOptions(
         nextInChain: nil,

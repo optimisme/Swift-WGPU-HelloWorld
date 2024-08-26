@@ -7,7 +7,7 @@ func main() {
     initSDL()
 
     let window = initWindow()
-    let instance = initWgpu(window: window) 
+    let instance = initWgpu() 
     let (device, queue) = initWgpuApp(instance: instance)
     let (surface, config) = initWgpuWindow(device: device, window: window, instance: instance)
     let cairoTexture = getCairoTexture(device: device, queue: queue, width: 512, height: 512)   
