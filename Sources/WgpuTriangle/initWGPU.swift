@@ -2,7 +2,7 @@ import Foundation
 import SDL2
 import SwiftWgpuTools
 
-func initWGPU(window: OpaquePointer) -> OpaquePointer {
+func initWgpu(window: OpaquePointer) -> OpaquePointer {
     // Create WGPU instance
     var extras = WGPUInstanceExtras(
         chain: WGPUChainedStruct(next: nil, sType: BACKEND_CHAIN),
