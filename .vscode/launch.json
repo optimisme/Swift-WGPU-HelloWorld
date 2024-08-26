@@ -7,9 +7,9 @@
                 "swift"
             ],
             "args": [],
-            "cwd": "${workspaceFolder:Swift-WGPU-HelloWorld}",
+            "cwd": "${workspaceFolder:SwiftWgpuHelloWorld}",
             "name": "Debug WgpuCairo",
-            "program": "${workspaceFolder:Swift-WGPU-HelloWorld}/.build/debug/WgpuCairo",
+            "program": "${workspaceFolder:SwiftWgpuHelloWorld}/.build/debug/WgpuCairo",
             "preLaunchTask": "swift: Build Debug WgpuCairo"
         },
         {
@@ -19,9 +19,9 @@
                 "swift"
             ],
             "args": [],
-            "cwd": "${workspaceFolder:Swift-WGPU-HelloWorld}",
+            "cwd": "${workspaceFolder:SwiftWgpuHelloWorld}",
             "name": "Release WgpuCairo",
-            "program": "${workspaceFolder:Swift-WGPU-HelloWorld}/.build/release/WgpuCairo",
+            "program": "${workspaceFolder:SwiftWgpuHelloWorld}/.build/release/WgpuCairo",
             "preLaunchTask": "swift: Build Release WgpuCairo"
         },
         {
@@ -31,9 +31,9 @@
                 "swift"
             ],
             "args": [],
-            "cwd": "${workspaceFolder:Swift-WGPU-HelloWorld}",
+            "cwd": "${workspaceFolder:SwiftWgpuHelloWorld}",
             "name": "Debug WgpuTriangle",
-            "program": "${workspaceFolder:Swift-WGPU-HelloWorld}/.build/debug/WgpuTriangle",
+            "program": "${workspaceFolder:SwiftWgpuHelloWorld}/.build/debug/WgpuTriangle",
             "preLaunchTask": "swift: Build Debug WgpuTriangle"
         },
         {
@@ -43,9 +43,9 @@
                 "swift"
             ],
             "args": [],
-            "cwd": "${workspaceFolder:Swift-WGPU-HelloWorld}",
+            "cwd": "${workspaceFolder:SwiftWgpuHelloWorld}",
             "name": "Release WgpuTriangle",
-            "program": "${workspaceFolder:Swift-WGPU-HelloWorld}/.build/release/WgpuTriangle",
+            "program": "${workspaceFolder:SwiftWgpuHelloWorld}/.build/release/WgpuTriangle",
             "preLaunchTask": "swift: Build Release WgpuTriangle"
         }
     ]
