@@ -1,5 +1,4 @@
 import Foundation
-import SDL2
 import SwiftWgpuTools
 
 func drawFrame(surface: WGPUSurface, device: WGPUDevice, queue: WGPUQueue, config: WGPUSurfaceConfiguration, renderPipeline: WGPURenderPipeline, bindGroup: WGPUBindGroup) {

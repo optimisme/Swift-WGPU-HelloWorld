@@ -1,5 +1,4 @@
 import Foundation
-import SDL2
 import SwiftWgpuTools
 
 func initWgpu() -> WGPUInstance {
