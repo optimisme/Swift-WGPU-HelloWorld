@@ -51,6 +51,10 @@ func initWgpuApp(instance: WGPUInstance) -> (device: WGPUDevice, queue: WGPUQueu
 
     let queue = wgpuDeviceGetQueue(device)
 
+    print("   Instance: \(instance)")
+    print("   Device: \(device)")
+    print("   Queue: \(queue!)")
+
     return (device, queue!)
 }
 

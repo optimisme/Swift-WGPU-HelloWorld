@@ -1,8 +1,6 @@
 #if os(macOS)
 import Foundation
 import Cocoa
-import Foundation
-import QuartzCore
 import SDL2
 import SwiftWgpuTools
 
