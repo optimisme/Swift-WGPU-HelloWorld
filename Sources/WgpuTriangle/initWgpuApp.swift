@@ -145,30 +145,30 @@ func listSupportedFeatures(adapter: WGPUAdapter) {
             print(" * Float32Filterable")
        default:
             switch feature.rawValue {
-            case 0x00030001:
+            case WGPUNativeFeature_PushConstants.rawValue:
                 print(" - Native feature: PushConstants")
-            case 0x00030002:
+            case WGPUNativeFeature_TextureAdapterSpecificFormatFeatures.rawValue:
                 print(" - Native feature: TextureAdapterSpecificFormatFeatures")
-            case 0x00030003:
+            case WGPUNativeFeature_MultiDrawIndirect.rawValue:
                 print(" - Native feature: MultiDrawIndirect")
-            case 0x00030004:
+            case WGPUNativeFeature_MultiDrawIndirectCount.rawValue:
                 print(" - Native feature: MultiDrawIndirectCount")
-            case 0x00030005:
+            case WGPUNativeFeature_VertexWritableStorage.rawValue:
                 print(" - Native feature: VertexWritableStorage")
-            case 0x00030006:
+            case WGPUNativeFeature_TextureBindingArray.rawValue:
                 print(" - Native feature: TextureBindingArray")
-            case 0x00030007:
+            case WGPUNativeFeature_SampledTextureAndStorageBufferArrayNonUniformIndexing.rawValue:
                 print(" - Native feature: SampledTextureAndStorageBufferArrayNonUniformIndexing")
-            case 0x00030008:
+            case WGPUNativeFeature_PipelineStatisticsQuery.rawValue:
                 print(" - Native feature: PipelineStatisticsQuery")
-            case 0x00030009:
+            case WGPUNativeFeature_StorageResourceBindingArray.rawValue:
                 print(" - Native feature: StorageResourceBindingArray")
-            case 0x0003000A:
+            case WGPUNativeFeature_PartiallyBoundBindingArray.rawValue:
                 print(" - Native feature: PartiallyBoundBindingArray")
-            case 0x7FFFFFFF:
-                print(" - Other feature: Force32")
+            case WGPUNativeFeature_Force32.rawValue:
+                print(" - Native feature: Force32")
             default:
-                print(" - Native feature: \(String(format: "0x%08X", feature.rawValue))")
+                print(" - Other feature: \(String(format: "0x%08X", feature.rawValue))")
             }
         }
     }
