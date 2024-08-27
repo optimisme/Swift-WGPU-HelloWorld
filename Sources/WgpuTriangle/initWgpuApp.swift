@@ -28,6 +28,8 @@ func initWgpuApp(instance: WGPUInstance) -> (device: WGPUDevice, queue: WGPUQueu
     print("   Device ID: \(properties.deviceID)")
     print("   Backend Type: \(properties.backendType.rawValue)")
 
+    listSupportedFeatures(adapter: adapter)
+
     // Request a device and queue from the adapter
     var deviceDescriptor = WGPUDeviceDescriptor(
         nextInChain: nil,
@@ -104,4 +106,81 @@ func requestDeviceCallback(status: WGPURequestDeviceStatus, requestedElement: WG
     } else {
         print("Error: userData is nil")
     }
+}
+
+
+
+// Function to list supported features
+func listSupportedFeatures(adapter: WGPUAdapter) {
+
+    var featuresCount: size_t = wgpuAdapterEnumerateFeatures(adapter, nil) // nil returns the size
+    var featuresArray = [WGPUFeatureName](repeating: WGPUFeatureName_Undefined, count: Int(featuresCount))
+    wgpuAdapterEnumerateFeatures(adapter, &featuresArray)
+
+    // Example output to display supported features
+    print("Supported Features:")
+    for feature in featuresArray {
+        switch feature {
+        case WGPUFeatureName_Undefined:
+            print(" * Undefined")
+        case WGPUFeatureName_DepthClipControl:
+            print(" * DepthClipControl")
+        case WGPUFeatureName_TimestampQuery:
+            print(" * TimestampQuery")
+        case WGPUFeatureName_TextureCompressionBC:
+            print(" * TextureCompressionBC")
+        case WGPUFeatureName_TextureCompressionETC2:
+            print(" * TextureCompressionETC2")
+        case WGPUFeatureName_TextureCompressionASTC:
+            print(" * TextureCompressionASTC")
+        case WGPUFeatureName_IndirectFirstInstance:
+            print(" * IndirectFirstInstance")
+        case WGPUFeatureName_ShaderF16:
+            print(" * ShaderF16")
+        case WGPUFeatureName_RG11B10UfloatRenderable:
+            print(" * RG11B10UfloatRenderable")
+        case WGPUFeatureName_BGRA8UnormStorage:
+            print(" * BGRA8UnormStorage")
+        case WGPUFeatureName_Float32Filterable:
+            print(" * Float32Filterable")
+        default:
+            print(" - Other feature: \(String(format: "0x%08X", feature.rawValue))") // Show in hex
+        }
+    }
+}
+
+func listSupportedNativeFeatures(adapter: WGPUAdapter) {
+
+    //let featuresCount: size_t = wgpuAdapterEnumerateFeatures(adapter, nil) // nil returns the size
+    //var featuresArray = [WGPUNativeFeature](repeating: WGPUNativeFeature_Force32, count: Int(featuresCount))
+    //wgpuAdapterEnumerateFeatures(adapter, &featuresArray)
+/*
+    // Example output to display supported features
+    print("Supported Features:")
+    for feature in featuresArray {
+        switch feature {
+        case WGPUNativeFeature_PushConstants:
+            print(" * WGPUNativeFeature_PushConstants")
+        case WGPUNativeFeature_TextureAdapterSpecificFormatFeatures:
+            print(" * WGPUNativeFeature_TextureAdapterSpecificFormatFeatures")
+        case WGPUNativeFeature_MultiDrawIndirect:
+            print(" * WGPUNativeFeature_MultiDrawIndirect")
+        case WGPUNativeFeature_MultiDrawIndirectCount:
+            print(" * WGPUNativeFeature_MultiDrawIndirectCount")
+        case WGPUNativeFeature_VertexWritableStorage:
+            print(" * WGPUNativeFeature_VertexWritableStorage")
+        case WGPUNativeFeature_TextureBindingArray:
+            print(" * WGPUNativeFeature_TextureBindingArray")
+        case WGPUNativeFeature_SampledTextureAndStorageBufferArrayNonUniformIndexing:
+            print(" * WGPUNativeFeature_SampledTextureAndStorageBufferArrayNonUniformIndexing")
+        case WGPUNativeFeature_PipelineStatisticsQuery:
+            print(" * WGPUNativeFeature_PipelineStatisticsQuery")
+        case WGPUNativeFeature_StorageResourceBindingArray:
+            print(" * WGPUNativeFeature_StorageResourceBindingArray")
+        case WGPUNativeFeature_PartiallyBoundBindingArray:
+            print(" * WGPUNativeFeature_PartiallyBoundBindingArray")
+        default:
+            print(" * Other feature: \(feature)")
+        }
+    }*/
 }
