@@ -143,8 +143,33 @@ func listSupportedFeatures(adapter: WGPUAdapter) {
             print(" * BGRA8UnormStorage")
         case WGPUFeatureName_Float32Filterable:
             print(" * Float32Filterable")
-        default:
-            print(" - Other feature: \(String(format: "0x%08X", feature.rawValue))") // Show in hex
+       default:
+            switch feature.rawValue {
+            case 0x00030001:
+                print(" - Native feature: PushConstants")
+            case 0x00030002:
+                print(" - Native feature: TextureAdapterSpecificFormatFeatures")
+            case 0x00030003:
+                print(" - Native feature: MultiDrawIndirect")
+            case 0x00030004:
+                print(" - Native feature: MultiDrawIndirectCount")
+            case 0x00030005:
+                print(" - Native feature: VertexWritableStorage")
+            case 0x00030006:
+                print(" - Native feature: TextureBindingArray")
+            case 0x00030007:
+                print(" - Native feature: SampledTextureAndStorageBufferArrayNonUniformIndexing")
+            case 0x00030008:
+                print(" - Native feature: PipelineStatisticsQuery")
+            case 0x00030009:
+                print(" - Native feature: StorageResourceBindingArray")
+            case 0x0003000A:
+                print(" - Native feature: PartiallyBoundBindingArray")
+            case 0x7FFFFFFF:
+                print(" - Other feature: Force32")
+            default:
+                print(" - Native feature: \(String(format: "0x%08X", feature.rawValue))")
+            }
         }
     }
 }
