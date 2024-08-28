@@ -113,7 +113,7 @@ func requestDeviceCallback(status: WGPURequestDeviceStatus, requestedElement: WG
 // Function to list supported features
 func listSupportedFeatures(adapter: WGPUAdapter) {
 
-    var featuresCount: size_t = wgpuAdapterEnumerateFeatures(adapter, nil) // nil returns the size
+    let featuresCount: size_t = wgpuAdapterEnumerateFeatures(adapter, nil) // nil returns the size
     var featuresArray = [WGPUFeatureName](repeating: WGPUFeatureName_Undefined, count: Int(featuresCount))
     wgpuAdapterEnumerateFeatures(adapter, &featuresArray)
 
