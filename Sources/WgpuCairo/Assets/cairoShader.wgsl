@@ -28,3 +28,11 @@ fn vs_main(@builtin(vertex_index) in_vertex_index: u32) -> VertexOutput {
     output.uv = uvs[in_vertex_index];
     return output;
 }
+
+@group(0) @binding(0) var myTexture: texture_2d<f32>;
+@group(0) @binding(1) var mySampler: sampler;
+
+@fragment
+fn fs_main(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
+    return textureSample(myTexture, mySampler, uv);
+}

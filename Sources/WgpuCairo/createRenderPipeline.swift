@@ -4,21 +4,15 @@ import Cairo
 
 func createRenderPipeline(device: WGPUDevice, texture: WGPUTexture) -> (WGPURenderPipeline, WGPUBindGroup) {
 
-    let vertexShaderSource = readFile(named: "Assets/vertex_shader.wgsl")
+    let shaderSource = readFile(named: "Assets/cairoShader.wgsl")
 
-    guard let vertexShaderSource = vertexShaderSource else {
+    guard let shaderSource = shaderSource else {
         fatalError("Could not load vertex shader")
-    }
-    
-    let fragmentShaderSource = readFile(named: "Assets/fragment_shader.wgsl")
-    
-    guard let fragmentShaderSource = fragmentShaderSource else {
-        fatalError("Could not load fragment shader")
     }
 
     // Create shader modules
-    let vertexShaderModule = createShaderModule(device: device, source: vertexShaderSource)
-    let fragmentShaderModule = createShaderModule(device: device, source: fragmentShaderSource)
+    let vertexShaderModule = createShaderModule(device: device, source: shaderSource)
+    let fragmentShaderModule = createShaderModule(device: device, source: shaderSource)
 
     // Vertex state setup
     let entryPoint = getUtf8String(from: "vs_main")

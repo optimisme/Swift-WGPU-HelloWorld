@@ -22,18 +22,18 @@ func initWgpuApp(instance: WGPUInstance) -> (device: WGPUDevice, queue: WGPUQueu
 
     var properties = WGPUAdapterProperties()
     wgpuAdapterGetProperties(adapter, &properties)
-    print("Selected adapter:")
-    print("   Adapter Name: \(String(cString: properties.name))")
-    print("   Vendor ID: \(properties.vendorID)")
-    print("   Device ID: \(properties.deviceID)")
-    print("   Backend Type: \(properties.backendType.rawValue)")
 
     // Request a device and queue from the adapter
+    var requiredFeatures: [WGPUFeatureName] = []
+    requiredFeatures.append(WGPUFeatureName_DepthClipControl)
+    requiredFeatures.append(WGPUFeatureName_TextureCompressionBC)
+    requiredFeatures.append(WGPUFeatureName(rawValue: WGPUNativeFeature_VertexWritableStorage.rawValue))
+
     var deviceDescriptor = WGPUDeviceDescriptor(
         nextInChain: nil,
         label: nil,
-        requiredFeatureCount: 0,
-        requiredFeatures: nil,
+        requiredFeatureCount: requiredFeatures.count,
+        requiredFeatures: requiredFeatures.withUnsafeBufferPointer { $0.baseAddress },
         requiredLimits: nil,
         defaultQueue: WGPUQueueDescriptor(nextInChain: nil, label: nil),
         deviceLostCallback: nil,
@@ -55,7 +55,6 @@ func initWgpuApp(instance: WGPUInstance) -> (device: WGPUDevice, queue: WGPUQueu
 }
 
 func requestAdapterCallback(status: WGPURequestAdapterStatus, requestedElement: WGPUAdapter?, message: UnsafePointer<CChar>?, userData: UnsafeMutableRawPointer?) {
-    print("Adapter callback executed with status: \(status.rawValue)")
     
     if let userData = userData {
         let requestData = Unmanaged<RequestData<WGPUAdapter>>.fromOpaque(userData).takeUnretainedValue()
@@ -64,22 +63,20 @@ func requestAdapterCallback(status: WGPURequestAdapterStatus, requestedElement: 
             if let pointee = requestedElement {
                 requestData.pointer.pointee = pointee
             } else {
-                print("Adapter request failed: Adapter is nil")
+                fatalError("Adapter request failed: Adapter is nil")
             }
         } else {
             let errorMessage = message != nil ? String(cString: message!) : "Unknown error"
-            print("Adapter request failed: \(errorMessage)")
+            fatalError("Adapter request failed: \(errorMessage)")
         }
 
-        print("Adapter Semaphore signal")
         requestData.resumeSignal()
     } else {
-        print("Error: userData is nil")
+        fatalError("Error: Adapter userData is nil")
     }
 }
 
 func requestDeviceCallback(status: WGPURequestDeviceStatus, requestedElement: WGPUDevice?, message: UnsafePointer<CChar>?, userData: UnsafeMutableRawPointer?) {
-    print("Device callback executed with status: \(status.rawValue)")
 
     if let userData = userData {
         let requestData = Unmanaged<RequestData<WGPUDevice>>.fromOpaque(userData).takeUnretainedValue()
@@ -88,16 +85,15 @@ func requestDeviceCallback(status: WGPURequestDeviceStatus, requestedElement: WG
             if let pointee = requestedElement {
                 requestData.pointer.pointee = pointee
             } else {
-                print("Adapter request failed: Adapter is nil")
+                fatalError("Device request failed: Device is nil")
             }
         } else {
             let errorMessage = message != nil ? String(cString: message!) : "Unknown error"
-            print("Adapter request failed: \(errorMessage)")
+            fatalError("Device request failed: \(errorMessage)")
         }
 
-        print("Device Semaphore signal")
         requestData.resumeSignal()
     } else {
-        print("Error: userData is nil")
+        fatalError("Error: Device userData is nil")
     }
 }
