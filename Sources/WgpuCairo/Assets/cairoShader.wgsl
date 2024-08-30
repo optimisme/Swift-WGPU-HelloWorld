@@ -6,21 +6,21 @@ struct VertexOutput {
 @vertex
 fn vs_main(@builtin(vertex_index) in_vertex_index: u32) -> VertexOutput {
     var positions = array<vec2<f32>, 6>(
-        vec2<f32>(-0.5, -0.5), // Primer triangle
-        vec2<f32>( 0.5, -0.5),
-        vec2<f32>(-0.5,  0.5),
-        vec2<f32>( 0.5, -0.5), // Segon triangle
+        vec2<f32>(-0.5,  0.5), // Primer triangle
         vec2<f32>( 0.5,  0.5),
-        vec2<f32>(-0.5,  0.5)
+        vec2<f32>(-0.5, -0.5),
+        vec2<f32>(-0.5, -0.5), // Segon triangle
+        vec2<f32>( 0.5,  0.5),
+        vec2<f32>( 0.5, -0.5)
     );
 
     var uvs = array<vec2<f32>, 6>(
-        vec2<f32>(0.0, 1.0), // Invertir la component y de les UVs
-        vec2<f32>(1.0, 1.0),
         vec2<f32>(0.0, 0.0),
-        vec2<f32>(1.0, 1.0),
         vec2<f32>(1.0, 0.0),
-        vec2<f32>(0.0, 0.0)
+        vec2<f32>(0.0, 1.0),
+        vec2<f32>(0.0, 1.0),
+        vec2<f32>(1.0, 0.0),
+        vec2<f32>(1.0, 1.0)
     );
 
     var output: VertexOutput;

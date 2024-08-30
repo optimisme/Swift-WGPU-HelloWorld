@@ -47,6 +47,54 @@
             "name": "Release WgpuTriangle",
             "program": "${workspaceFolder:SwiftWgpuHelloWorld}/.build/release/WgpuTriangle",
             "preLaunchTask": "swift: Build Release WgpuTriangle"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:SwiftWgpuHelloWorld}",
+            "name": "Debug WgpuVger",
+            "program": "${workspaceFolder:SwiftWgpuHelloWorld}/.build/debug/WgpuVger",
+            "preLaunchTask": "swift: Build Debug WgpuVger"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:SwiftWgpuHelloWorld}",
+            "name": "Release WgpuVger",
+            "program": "${workspaceFolder:SwiftWgpuHelloWorld}/.build/release/WgpuVger",
+            "preLaunchTask": "swift: Build Release WgpuVger"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:SwiftWgpuHelloWorld}",
+            "name": "Debug WgpuDrawing",
+            "program": "${workspaceFolder:SwiftWgpuHelloWorld}/.build/debug/WgpuDrawing",
+            "preLaunchTask": "swift: Build Debug WgpuDrawing"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:SwiftWgpuHelloWorld}",
+            "name": "Release WgpuDrawing",
+            "program": "${workspaceFolder:SwiftWgpuHelloWorld}/.build/release/WgpuDrawing",
+            "preLaunchTask": "swift: Build Release WgpuDrawing"
         }
     ]
 }
